@@ -50,6 +50,16 @@ object IHTPPSPPageRequests extends BaseRequest {
       .formParam("enrolment[0].state", _ => "Activated")
       .check(status.is(303))
 
+  def getReportInheritanceTaxOnPensionPageForPsp: HttpRequestBuilder =
+    http("Get Report Inheritance Tax on a pension Page")
+      .get(s"$baseUrl$route/report-inheritance-tax-on-pension")
+      .check(status.is(200))
+
+  def getViewPaidReportsPageForPsp: HttpRequestBuilder =
+    http("Get View Paid Inheritance Tax on a pension reports Page")
+      .get(s"$baseUrl$route/paid-reports")
+      .check(status.is(200))
+
   def getYouWillNeedPageForPsp: HttpRequestBuilder =
     http("Get What you will need Page")
       .get(s"$baseUrl$WhatWillYouNeed")
@@ -92,7 +102,7 @@ object IHTPPSPPageRequests extends BaseRequest {
       .formParam("surname", _ => surname)
       .check(status.is(303))
       .check(header(locationHeaderExpr).is(s"$route/deceased-has-ni-number": String))
-  
+
 //
 //  def getEnterNationalInsuranceNumberPageForPsp: HttpRequestBuilder =
 //    http("Navigate to Deceased has a National Insurance number Page")
@@ -291,7 +301,7 @@ object IHTPPSPPageRequests extends BaseRequest {
       .check(
         header(locationHeaderExpr).is(
           submitOption match {
-            case "true" => s"$route/check-your-answers"
+            case "true"  => s"$route/check-your-answers"
             case "false" => s"$route/check-your-answers"
           }
         )
