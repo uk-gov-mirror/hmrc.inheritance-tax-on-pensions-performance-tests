@@ -56,6 +56,11 @@ object IHTPPageRequests extends BaseRequest {
       .get(s"$baseUrl$route/report-inheritance-tax-on-pension")
       .check(status.is(200))
 
+  def getViewPaidReportsPage: HttpRequestBuilder =
+    http("Get View Paid Inheritance Tax on a pension reports Page")
+      .get(s"$baseUrl$route/paid-reports")
+      .check(status.is(200))
+
   def getYouWillNeedPage: HttpRequestBuilder =
     http("Get What you will need Page")
       .get(s"$baseUrl$WhatWillYouNeed")
@@ -106,25 +111,25 @@ object IHTPPageRequests extends BaseRequest {
       .check(saveCsrfToken())
 
   def postDoesDeceasedHasNationalInsuranceNumberPage(deceasednino: String): HttpRequestBuilder =
-      http("Post Deceased has a National Insurance number Page")
-        .post(s"$baseUrl$route/deceased-has-ni-number")
-        .formParam("csrfToken", csrfTokenExpr)
-        .formParam("value", deceasednino: Expression[String])
-        .check(status.is(303))
-        .check(
-          header(locationHeaderExpr).is(
-            deceasednino match {
-              case "true" => s"$route/enter-ni-number"
-              case "false" => s"$route/reason-no-ni-number"
-            }
-          )
+    http("Post Deceased has a National Insurance number Page")
+      .post(s"$baseUrl$route/deceased-has-ni-number")
+      .formParam("csrfToken", csrfTokenExpr)
+      .formParam("value", deceasednino: Expression[String])
+      .check(status.is(303))
+      .check(
+        header(locationHeaderExpr).is(
+          deceasednino match {
+            case "true"  => s"$route/enter-ni-number"
+            case "false" => s"$route/reason-no-ni-number"
+          }
         )
+      )
 
-    def getEnterNationalInsuranceNumberPage: HttpRequestBuilder =
-        http("Navigate to Enter National Insurance number of Deceased Page")
-          .get(s"$baseUrl$route/enter-ni-number": String)
-          .check(status.is(200))
-          .check(saveCsrfToken())
+  def getEnterNationalInsuranceNumberPage: HttpRequestBuilder =
+    http("Navigate to Enter National Insurance number of Deceased Page")
+      .get(s"$baseUrl$route/enter-ni-number": String)
+      .check(status.is(200))
+      .check(saveCsrfToken())
 
   def postEnterNationalInsuranceNumberPage(): HttpRequestBuilder =
     http("Post Enter National Insurance number of Deceased Page")
@@ -301,8 +306,8 @@ object IHTPPageRequests extends BaseRequest {
       .check(
         header(locationHeaderExpr).is(
           submitOption match {
-            case "individual"   => s"$route/enter-name-of-beneficiary/0"
-            case "organisation" => s"$route/beneficiary-organisation-details/0"
+            case "individual" => s"$route/enter-name-of-beneficiary/0"
+            case "trust"      => s"$route/beneficiary-organisation-details/0"
           }
         )
       )
@@ -332,7 +337,7 @@ object IHTPPageRequests extends BaseRequest {
     http("Post Enter the name of the trust Page")
       .post(s"$baseUrl$route/beneficiary-organisation-details/0": String)
       .formParam("csrfToken", csrfTokenExpr)
-      .formParam("trustName", _ => trustName)
+      .formParam("value", trustName: Expression[String])
       .check(status.is(303))
       .check(header(locationHeaderExpr).is(s"$route/add-beneficiary": String))
 
@@ -372,7 +377,7 @@ object IHTPPageRequests extends BaseRequest {
       .check(
         header(locationHeaderExpr).is(
           submitOption match {
-            case "true" => s"$route/check-your-answers"
+            case "true"  => s"$route/check-your-answers"
             case "false" => s"$route/check-your-answers"
           }
         )

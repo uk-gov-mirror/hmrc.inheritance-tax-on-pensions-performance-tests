@@ -70,9 +70,9 @@ class IHTPSimulation extends PerformanceTestRunner {
   )
 
   setup(
-    "psa-view-submissions for an Organisation with beneficiary type of Organisation",
+    "psa-view-submissions-for-an-organisation-with-beneficiary-type-of-organisation",
     "PSA View Submissions for an Organisation with beneficiary type of Organisation"
-  ) withRequests(
+  ) withRequests (
     getLoginToIHTPPage,
     postLoginToIHTPPage,
     getReportInheritanceTaxOnPensionPage,
@@ -102,7 +102,7 @@ class IHTPSimulation extends PerformanceTestRunner {
     getAreBeneficiariesKnownPage,
     postAreBeneficiariesKnownPage("true"),
     getSelectBeneficiaryTypePage,
-    postSelectBeneficiaryTypePage("organisation"),
+    postSelectBeneficiaryTypePage("trust"),
     getEnterNameOfTrust,
     postEnterNameOfTrust("Test Organisation & Co ltd."),
     getYouAddedABeneficiaryPage,
@@ -120,6 +120,7 @@ class IHTPSimulation extends PerformanceTestRunner {
   ) withRequests (
     getLoginToIHTPPageForPsp,
     postLoginToIHTPPageForPsp,
+    getReportInheritanceTaxOnPensionPageForPsp,
     getYouWillNeedPageForPsp,
     postYouWillNeedPageForPsp,
     getEnterInheritanceTaxReferencePageForPsp,
@@ -151,8 +152,6 @@ class IHTPSimulation extends PerformanceTestRunner {
     postEnterNameOfBeneficiaryForPsp("BeneficiaryFirstName", "BeneficiarySurnameName"),
     getBeneficiaryNationalInsuranceNumberPageForPsp,
     postBeneficiaryNationalInsuranceNumberPageForPsp("true"),
-    getYouAddedABeneficiaryPageForPsp,
-    postYouAddedABeneficiaryPageForPsp("false"),
     postCYAPageForPsp,
     getDeclarationPageForPsp
 //    postDeclarationPageForPsp,
@@ -192,6 +191,26 @@ class IHTPSimulation extends PerformanceTestRunner {
     postCYAPage
 //    getPsaDeclarationPage,
 //    postPsaDeclarationPage,
+  )
+
+  setup(
+    "psa-view-paid-reports",
+    "Psa View Paid Reports"
+  ) withRequests (
+    getLoginToIHTPPage,
+    postLoginToIHTPPage,
+    getReportInheritanceTaxOnPensionPage,
+    getViewPaidReportsPage
+  )
+
+  setup(
+    "psp-view-paid-reports",
+    "PSP View Paid Reports"
+  ) withRequests (
+    getLoginToIHTPPageForPsp,
+    postLoginToIHTPPageForPsp,
+    getReportInheritanceTaxOnPensionPageForPsp,
+    getViewPaidReportsPageForPsp
   )
 
   runSimulation()
